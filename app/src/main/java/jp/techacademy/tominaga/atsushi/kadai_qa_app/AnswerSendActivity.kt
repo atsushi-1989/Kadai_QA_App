@@ -32,7 +32,7 @@ class AnswerSendActivity : AppCompatActivity(), View.OnClickListener, DatabaseRe
 
 
     override fun onComplete(databaseError: DatabaseError?, databaseReference: DatabaseReference) {
-        progressBar1.visibility = View.GONE
+        progressBar.visibility = View.GONE
 
         if(databaseError == null){
             finish()
@@ -49,7 +49,7 @@ class AnswerSendActivity : AppCompatActivity(), View.OnClickListener, DatabaseRe
         val databaseReference = FirebaseDatabase.getInstance().reference
         val answerRef = databaseReference.child(ContentsPATH).child(mQuestion.genre.toString()).child(mQuestion.questionUid).child(AnswersPATH)
 
-        val data = HashMap<String, String>()
+        val data = HashMap<String, String?>()
 
         //UID
         data["uid"] = FirebaseAuth.getInstance().currentUser!!.uid
@@ -57,7 +57,7 @@ class AnswerSendActivity : AppCompatActivity(), View.OnClickListener, DatabaseRe
         //表示名
         //Preferenceから名前を取る
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
-        val name = sp.getString(NameKEY,"")
+        val name = sp.getString("NameKEY","")
         data["name"] = name
 
         //回答を取得する
@@ -70,6 +70,7 @@ class AnswerSendActivity : AppCompatActivity(), View.OnClickListener, DatabaseRe
         }
 
         data["body"] = answer
+
         progressBar.visibility = View.VISIBLE
         answerRef.push().setValue(data,this)
 

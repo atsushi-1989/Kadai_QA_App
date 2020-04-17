@@ -15,7 +15,7 @@ class QuestionDetailActivity : AppCompatActivity() {
 
     private val mEventListener = object : ChildEventListener{
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-            val map = dataSnapshot.value as Map<String,String>
+            val map = dataSnapshot.value as Map<String,String?>
 
             val answerUid = dataSnapshot.key ?: ""
 
@@ -35,19 +35,19 @@ class QuestionDetailActivity : AppCompatActivity() {
             mAdapter.notifyDataSetChanged()
         }
 
-        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+        override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
         }
 
-        override fun onChildRemoved(p0: DataSnapshot) {
+        override fun onChildRemoved(dataSnapshot: DataSnapshot) {
 
         }
 
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+        override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
 
         }
 
-        override fun onCancelled(p0: DatabaseError) {
+        override fun onCancelled(databaseError: DatabaseError) {
 
         }
     }
