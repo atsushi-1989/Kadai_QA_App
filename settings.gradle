@@ -1,0 +1,2 @@
+rootProject.name='Kadai_QA_App'
+include ':app'
