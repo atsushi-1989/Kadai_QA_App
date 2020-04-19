@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.getSystemService
+import com.google.firebase.auth.FirebaseAuth
 
 class QuestionDetailListAdapter(context: Context, private val mQuestion: Question): BaseAdapter() {
     companion object {
@@ -58,19 +59,22 @@ class QuestionDetailListAdapter(context: Context, private val mQuestion: Questio
             val name = mQuestion.name
 
 
-            val bodyTextView = convertView.findViewById<View>(R.id.bodyTextView) as TextView
+
+            val bodyTextView = convertView.findViewById<View>(R.id.qdBodyTextView) as TextView
             bodyTextView.text = body
 
-            val nameTextView = convertView.findViewById<View>(R.id.nameTextView) as TextView
+            val nameTextView = convertView.findViewById<View>(R.id.qdNameTextView) as TextView
             nameTextView.text = name
 
 
             val bytes = mQuestion.imageBytes
             if(bytes.isNotEmpty()){
                 val image = BitmapFactory.decodeByteArray(bytes,0,bytes.size).copy(Bitmap.Config.ARGB_8888,true)
-                val imageView = convertView.findViewById<View>(R.id.imageView) as ImageView
+                val imageView = convertView.findViewById<View>(R.id.qdImageView) as ImageView
                 imageView.setImageBitmap(image)
             }
+
+
         }else{
             if (convertView == null){
                 convertView = mLayoutInflater!!.inflate(R.layout.list_answer, parent, false)!!
@@ -81,10 +85,10 @@ class QuestionDetailListAdapter(context: Context, private val mQuestion: Questio
             val body = answer.body
             val name = answer.name
 
-            val bodyTextView = convertView.findViewById<View>(R.id.bodyTextView) as TextView
+            val bodyTextView = convertView.findViewById<View>(R.id.answerBodyTextView) as TextView
             bodyTextView.text = body
 
-            val nameTextView = convertView.findViewById<View>(R.id.nameTextView) as TextView
+            val nameTextView = convertView.findViewById<View>(R.id.answerNameTextView) as TextView
             nameTextView.text = name
         }
 

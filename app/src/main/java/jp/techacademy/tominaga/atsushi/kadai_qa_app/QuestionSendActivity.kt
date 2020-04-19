@@ -55,8 +55,8 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
         //UIの準備
         title = "質問作成"
 
-        sendButton.setOnClickListener(this)
-        imageView.setOnClickListener(this)
+        qsSendButton.setOnClickListener(this)
+        qsImageView.setOnClickListener(this)
 
     }
 
@@ -97,7 +97,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
             val resizedImage = Bitmap.createBitmap(image,0,0,imageWidth,imageHeight,matrix,true)
 
             //BitmapをImageViewに設定する
-            imageView.setImageBitmap(resizedImage)
+            qsImageView.setImageBitmap(resizedImage)
 
             mPictureUri = null
         }
@@ -105,7 +105,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
 
 
     override fun onClick(v: View?) {
-        if(v === imageView){
+        if(v === qsImageView){
             //パーミッションの許可状況を確認する
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
@@ -121,7 +121,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
                 showChooser()
             }
 
-        }else if (v === sendButton){
+        }else if (v === qsSendButton){
             //キーボードが出たら閉じる
             val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             im.hideSoftInputFromWindow(v.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS)
@@ -136,8 +136,8 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
             data["uid"] = FirebaseAuth.getInstance().currentUser!!.uid
 
             //タイトルと本文を取得する
-            val title = titleText.text.toString()
-            val body = bodyText.text.toString()
+            val title = qsTitleText.text.toString()
+            val body = qsBodyText.text.toString()
 
             if(title.isEmpty()){
                 //タイトルが入力されていないときはエラーを表示するだけ
@@ -160,7 +160,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
             data["name"] = name
 
             //添付画像を取得する
-            val drawable = imageView.drawable as? BitmapDrawable
+            val drawable = qsImageView.drawable as? BitmapDrawable
 
             //添付画像が設定されていれば画像を取り出してBASE&$エンコードする
             if (drawable != null){
@@ -173,7 +173,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
             }
 
             genreRef.push().setValue(data,this)
-            progressBar.visibility = View.VISIBLE
+            qsProgressBar.visibility = View.VISIBLE
 
         }
     }
@@ -221,7 +221,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,DatabaseR
     }
 
     override fun onComplete(databaseError: DatabaseError?, databaseReference: DatabaseReference) {
-        progressBar.visibility = View.GONE
+        qsProgressBar.visibility = View.GONE
 
         if(databaseError == null){
             finish()

@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Body"
-        android:id="@+id/bodyTextView"
+        android:id="@+id/answerBodyTextView"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"/>
 
@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Name"
-        android:id="@+id/nameTextView"
-        android:layout_below="@+id/bodyTextView"
+        android:id="@+id/answerNameTextView"
+        android:layout_below="@+id/answerBodyTextView"
         android:layout_alignParentEnd="true"/>
 
 

@@ -3,9 +3,11 @@ package jp.techacademy.tominaga.atsushi.kadai_qa_app
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_question_detail.*
+import kotlinx.android.synthetic.main.list_question_detail.*
 
 class QuestionDetailActivity : AppCompatActivity() {
 
@@ -37,6 +39,7 @@ class QuestionDetailActivity : AppCompatActivity() {
 
         override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
+
         }
 
         override fun onChildRemoved(dataSnapshot: DataSnapshot) {
@@ -62,12 +65,14 @@ class QuestionDetailActivity : AppCompatActivity() {
 
         title = mQuestion.title
 
+
+
         //ListViewの準備
         mAdapter = QuestionDetailListAdapter(this,mQuestion)
-        listView.adapter = mAdapter
+       qdListView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
 
-        fab.setOnClickListener{
+        qdFab.setOnClickListener{
             //ログイン済みのユーザーを取得する
             val user = FirebaseAuth.getInstance().currentUser
 
@@ -76,15 +81,44 @@ class QuestionDetailActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext,LoginActivity::class.java)
                 startActivity(intent)
             }else {
-                //Questionを渡して回答せ策画面を起動する
+                //Questionを渡して回答作成画面を起動する
                 val intent = Intent(applicationContext,AnswerSendActivity::class.java)
                 intent.putExtra("question",mQuestion)
                 startActivity(intent)
             }
         }
 
-        val dataBaseReference = FirebaseDatabase.getInstance().reference
-        mAnswerRef = dataBaseReference.child(ContentsPATH).child(mQuestion.genre.toString()).child(AnswersPATH)
+
+
+        //ログイン済みのユーザーを取得する (ログインしていないとnull)
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user != null){
+            qdFavoritesButton.visibility = View.VISIBLE
+        }else{
+            qdFavoritesButton.visibility = View.GONE
+        }
+
+        qdFavoritesButton.setOnClickListener{
+            if (qdFavoritesButton.text == "off"){
+                qdFavoritesButton.setBackgroundResource(R.drawable.ic_star_yellow_24dp)
+                qdFavoritesButton.text = "on"
+            }else if (qdFavoritesButton.text == "on"){
+                qdFavoritesButton.setBackgroundResource(R.drawable.ic_star_black_24dp)
+                qdFavoritesButton.text = "off"
+            }
+
+            val qdFavoritesReference = FirebaseDatabase.getInstance().reference
+            val mqdFavorites = qdFavoritesReference.child("favotites").child(user!!.uid)
+            mqdFavorites.push().setValue(qdFavoritesButton.text.toString(),this)
+            mqdFavorites.addChildEventListener(mEventListener)
+
+        }
+
+
+
+        val answerDataBaseReference = FirebaseDatabase.getInstance().reference
+        mAnswerRef = answerDataBaseReference.child(ContentsPATH).child(mQuestion.genre.toString()).child(mQuestion.questionUid).child(AnswersPATH)
         mAnswerRef.addChildEventListener(mEventListener)
     }
 }

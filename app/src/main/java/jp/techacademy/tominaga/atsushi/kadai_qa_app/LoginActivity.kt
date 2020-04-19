@@ -39,8 +39,8 @@ class LoginActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 //成功した場合
                 //ログインを行う
-                val email = emailText.text.toString()
-                val password = passwordText.text.toString()
+                val email = loginEmailText.text.toString()
+                val password = loginPasswordText.text.toString()
                 login(email, password)
             } else {
 
@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                 Snackbar.make(view, "アカウント作成に失敗しました", Snackbar.LENGTH_LONG).show()
 
                 //プログレスバーを非表示にする
-                progressBar.visibility = View.GONE
+                loginProgressBar.visibility = View.GONE
             }
 
         }
@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 //アカウント作成時
                 if (mIsCreateAccount) {
                     //アカウント作成の時は表示名をFirebaseに保存する
-                    val name = nameText.text.toString()
+                    val name = loginNameText.text.toString()
 
                     val data = HashMap<String, String>()
                     data["name"] = name
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             //プログレスバーを非表示にする
-            progressBar.visibility = View.GONE
+            loginProgressBar.visibility = View.GONE
 
             //Activityを閉じる
             finish()
@@ -99,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
                 Snackbar.make(view,"ログインに失敗しました",Snackbar.LENGTH_LONG).show()
 
                 //プログレスバーを非表示にする
-                progressBar.visibility = View.GONE
+                loginProgressBar.visibility = View.GONE
             }
         }
 
@@ -114,9 +114,9 @@ class LoginActivity : AppCompatActivity() {
             val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             im.hideSoftInputFromWindow(v.windowToken,InputMethodManager.HIDE_NOT_ALWAYS)
 
-            val email = emailText.text.toString()
-            val password = passwordText.text.toString()
-            val name = nameText.text.toString()
+            val email = loginEmailText.text.toString()
+            val password = loginPasswordText.text.toString()
+            val name = loginNameText.text.toString()
 
             if (email.length != 0 && password.length >= 6 && name.length != 0){
                 //ログイン時に表示名を保存するようにフラグを立てる
@@ -135,8 +135,8 @@ class LoginActivity : AppCompatActivity() {
             val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             im.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
-            val email = emailText.text.toString()
-            val password = passwordText.text.toString()
+            val email = loginEmailText.text.toString()
+            val password = loginPasswordText.text.toString()
 
             if (email.length != 0 && password.length >= 6) {
                 //フラグを落としておく
@@ -154,7 +154,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun createAccount(email: String, password: String){
         //プログレスバーを表示する
-        progressBar.visibility = View.VISIBLE
+        loginProgressBar.visibility = View.VISIBLE
 
         //アカウントを作成する
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(mCreateAcountListener)
@@ -162,7 +162,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login(email: String, password: String){
         //プログレスバーを表示する
-        progressBar.visibility = View.VISIBLE
+        loginProgressBar.visibility = View.VISIBLE
 
         //ログインする
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(mLoginListener)

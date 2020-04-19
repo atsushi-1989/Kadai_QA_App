@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_setting.*
-import kotlinx.android.synthetic.main.activity_setting.nameText
+import kotlinx.android.synthetic.main.activity_setting.settingNameText
 
 class SettingActivity : AppCompatActivity() {
 
@@ -24,7 +24,7 @@ class SettingActivity : AppCompatActivity() {
         //preferenceから表示名を取得してEditTextに反映させる
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         val name = sp.getString(NameKEY,"")
-        nameText.setText(name)
+        settingNameText.setText(name)
 
 
         mDataBaseReference = FirebaseDatabase.getInstance().reference
@@ -32,7 +32,7 @@ class SettingActivity : AppCompatActivity() {
         //UIの初期設定
         title = "設定"
 
-        changeButton.setOnClickListener {v ->
+        settingChangeButton.setOnClickListener {v ->
             // キーボードが出ていたら閉じる
             val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             im.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
@@ -45,7 +45,7 @@ class SettingActivity : AppCompatActivity() {
                 Snackbar.make(v,"ログインしていません",Snackbar.LENGTH_LONG).show()
             }else{
                 //変更した表示名をFirebaseに保存する
-                val name = nameText.text.toString()
+                val name = settingNameText.text.toString()
                 val userRef = mDataBaseReference.child(UsersPATH).child(user.uid)
                 val data = HashMap<String, String>()
                 data["name"] = name
@@ -61,9 +61,9 @@ class SettingActivity : AppCompatActivity() {
             Snackbar.make(v,"表示名を変更しました",Snackbar.LENGTH_LONG).show()
         }
 
-        logoutButton.setOnClickListener { v ->
+        settingLogoutButton.setOnClickListener { v ->
             FirebaseAuth.getInstance().signOut()
-            nameText.setText("")
+            settingNameText.setText("")
             Snackbar.make(v,"ログアウトしました",Snackbar.LENGTH_LONG).show()
         }
     }

@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }else{
                     byteArrayOf()
                 }
+
+
             val answerArrayList = ArrayList<Answer>()
             val answerMap = map["answers"] as Map<String,String>?
 
@@ -113,11 +115,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mToolbar = findViewById(R.id.toolbar)
+        mToolbar = findViewById(R.id.mainToolbar)
         setSupportActionBar(mToolbar)
 
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        val fab = findViewById<FloatingActionButton>(R.id.mainFab)
         fab.setOnClickListener { view ->
             //ジャンルを選択していない場合(mGenre == 0)はエラーを表示するだけ
             if(mGenre == 0){
@@ -146,7 +148,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val navigationView = findViewById<NavigationView>(R.id.mainNav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
 
@@ -154,7 +156,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mDatabaseReference = FirebaseDatabase.getInstance().reference
 
         //ListViewの準備
-        mListView = findViewById(R.id.listView)
+        mListView = findViewById(R.id.mainListView)
         mAdapter = QuestionListAdapter(this)
         mQuestionArrayList = ArrayList<Question>()
         mAdapter.notifyDataSetChanged()
@@ -171,7 +173,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val navigationView = findViewById<NavigationView>(R.id.mainNav_view)
 
         //1:趣味を既定の選択とする
         if (mGenre == 0){

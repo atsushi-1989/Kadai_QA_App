@@ -13,13 +13,13 @@
     tools:context=".SettingActivity">
 
     <EditText
-        android:id="@+id/nameText"
+        android:id="@+id/settingNameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="表示名"/>
 
     <Button
-        android:id="@+id/changeButton"
+        android:id="@+id/settingChangeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -28,7 +28,7 @@
         android:textColor="@color/colorButtonText"/>
 
     <Button
-        android:id="@+id/logoutButton"
+        android:id="@+id/settingLogoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"

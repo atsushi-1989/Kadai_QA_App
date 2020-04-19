@@ -27,12 +27,12 @@ class AnswerSendActivity : AppCompatActivity(), View.OnClickListener, DatabaseRe
         mQuestion = extras?.get("question") as Question
 
         //UIの準備
-        sendButton.setOnClickListener(this)
+        asSendButton.setOnClickListener(this)
     }
 
 
     override fun onComplete(databaseError: DatabaseError?, databaseReference: DatabaseReference) {
-        progressBar.visibility = View.GONE
+       asProgressBar.visibility = View.GONE
 
         if(databaseError == null){
             finish()
@@ -57,7 +57,7 @@ class AnswerSendActivity : AppCompatActivity(), View.OnClickListener, DatabaseRe
         //表示名
         //Preferenceから名前を取る
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
-        val name = sp.getString("NameKEY","")
+        val name = sp.getString(NameKEY,"")
         data["name"] = name
 
         //回答を取得する
@@ -71,7 +71,7 @@ class AnswerSendActivity : AppCompatActivity(), View.OnClickListener, DatabaseRe
 
         data["body"] = answer
 
-        progressBar.visibility = View.VISIBLE
+        asProgressBar.visibility = View.VISIBLE
         answerRef.push().setValue(data,this)
 
     }
