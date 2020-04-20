@@ -1,5 +1,6 @@
 package jp.techacademy.tominaga.atsushi.kadai_qa_app
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
@@ -201,6 +202,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
+        val user = FirebaseAuth.getInstance().currentUser
 
         if(id == R.id.nav_hobby){
             mToolbar.title = "趣味"
@@ -211,10 +213,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }else if(id == R.id.nav_health){
             mToolbar.title = "健康"
             mGenre = 3
-        }
-        else if (id == R.id.nav_compter){
+        }else if (id == R.id.nav_compter){
             mToolbar.title = "コンピューター"
             mGenre = 4
+
+        }else if(user != null){
+            if(id == R.id.favorites){
+                val intent = Intent(applicationContext,FavoritActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)

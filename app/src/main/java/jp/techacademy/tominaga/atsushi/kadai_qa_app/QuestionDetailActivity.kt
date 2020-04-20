@@ -14,6 +14,7 @@ class QuestionDetailActivity : AppCompatActivity() {
     private lateinit var mQuestion: Question
     private lateinit var mAdapter: QuestionDetailListAdapter
     private lateinit var mAnswerRef: DatabaseReference
+    private lateinit var mDataBaseReference: DatabaseReference
 
     private val mEventListener = object : ChildEventListener{
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
@@ -93,29 +94,33 @@ class QuestionDetailActivity : AppCompatActivity() {
         //ログイン済みのユーザーを取得する (ログインしていないとnull)
         val user = FirebaseAuth.getInstance().currentUser
 
-        if (user != null){
-            qdFavoritesButton.visibility = View.VISIBLE
-        }else{
+        if (user == null){
             qdFavoritesButton.visibility = View.GONE
-        }
+        }else {
+            qdFavoritesButton.visibility = View.VISIBLE
 
-        qdFavoritesButton.setOnClickListener{
-            if (qdFavoritesButton.text == "off"){
-                qdFavoritesButton.setBackgroundResource(R.drawable.ic_star_yellow_24dp)
-                qdFavoritesButton.text = "on"
-            }else if (qdFavoritesButton.text == "on"){
-                qdFavoritesButton.setBackgroundResource(R.drawable.ic_star_black_24dp)
-                qdFavoritesButton.text = "off"
+            qdFavoritesButton.setOnClickListener {
+                if (qdFavoritesButton.text == "off") {
+                    qdFavoritesButton.setBackgroundResource(R.drawable.ic_star_yellow_24dp)
+                    qdFavoritesButton.text = "on"
+                } else if (qdFavoritesButton.text == "on") {
+                    qdFavoritesButton.setBackgroundResource(R.drawable.ic_star_black_24dp)
+                    qdFavoritesButton.text = "off"
+                }
+
+                mDataBaseReference = FirebaseDatabase.getInstance().reference
+                val userRef = mDataBaseReference.child(UsersPATH).child(user.uid)
+
+                val qdFavoritesButtonText = HashMap<String, String>()
+
+                qdFavoritesButtonText["favorits"] = qdFavoritesButton.text.toString()
+                userRef.setPriority(qdFavoritesButtonText)
+
+
+
+
             }
-
-            val qdFavoritesReference = FirebaseDatabase.getInstance().reference
-            val mqdFavorites = qdFavoritesReference.child("favotites").child(user!!.uid)
-            mqdFavorites.push().setValue(qdFavoritesButton.text.toString(),this)
-            mqdFavorites.addChildEventListener(mEventListener)
-
         }
-
-
 
         val answerDataBaseReference = FirebaseDatabase.getInstance().reference
         mAnswerRef = answerDataBaseReference.child(ContentsPATH).child(mQuestion.genre.toString()).child(mQuestion.questionUid).child(AnswersPATH)
